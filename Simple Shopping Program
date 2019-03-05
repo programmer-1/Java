@@ -1,0 +1,377 @@
+package shopping;
+
+import java.util.*;
+
+//class to assign object
+class Assign {
+   
+    String Name;
+    String Product_Name;
+    String Mobile_No;
+    String Price;
+    String Stack;
+    String Brand;
+    String Discription;
+
+    //Constructor function
+    public Assign(String Item_Name, String Mobile_Number, String Name, String Item_Brand, String Item_Discription, String Price)
+    {
+       this.Name = Name;
+       this.Mobile_No = Mobile_Number;
+       this.Product_Name = Item_Name;
+       this.Brand = Item_Brand;
+       this.Discription = Item_Discription;
+       this.Price = Price;
+    }   
+}
+//Shopping Program starts here
+public class Shopping {
+      
+    static int i = -1;
+    double price;
+    static String[][] Search_Array = new String[10][6];
+    static String Bill_Array[][] = new String[5][6];
+    static String Product_Array[][] = new String[10][6];
+    static int cart = -1;
+    static int row = -1;
+
+ //Main Function  
+    public static void main(String[] args)
+    {
+       Assign Object[] = new Assign[10];//Object of Assign Class
+
+       Scanner input = new Scanner(System.in);
+       int Choice;
+       System.out.println("    WELCCOME TO ONLINE SHOPPING  \n\n ");
+       
+       do
+       {  
+         System.out.println("Enter :\n\t1) Seller\n\t2) Buyer\n");
+         System.out.print("Enter your Choice : ");
+         Choice = input.nextInt();
+       
+         if(Choice == 1)
+           Seller(Object);
+         else
+           Buyer(Object);
+       }
+       while(Choice != 2);
+    }
+  //Seller Fuction
+    static void Seller(Assign Object[])
+    {      
+     
+      try
+      {
+        String Name;
+        String Product_Name;
+        String Mobile_No;
+        String Price;
+        String Stack;
+        String Brand;
+        String Discription;
+     
+        int Choice;
+
+        Scanner input = new Scanner(System.in);
+     
+        System.out.println("*******************You have choosen Seller*******************\n");
+     
+        System.out.print("Enter your Name  : ");
+        Name = input.next().toUpperCase();
+      
+        System.out.print("Enter your Mobile_No  : ");
+        Mobile_No = input.next();
+      
+       while(true)
+       {            
+         System.out.println("Enter \n\t1) Add Product\n\t2) Exit\t ");
+         Choice = input.nextInt();
+
+        
+       
+          if(Choice == 1) 
+          {
+             i++;
+             System.out.println("\n***************************************************\n");
+             System.out.print("Enter your Product_Name  : ");
+             Product_Name = input.next().toUpperCase();
+        
+             System.out.print("Enter your Brand  : ");
+             Brand = input.next().toUpperCase();
+            
+             System.out.print("Enter the Price of the Product : ");
+             Price = input.next();
+      
+             System.out.print("Enter your Discription  : ");
+             Discription = input.next();
+             Discription += input.nextLine();
+        
+             System.out.println("\n***************************************************\n");
+            
+             Object[i] = new Assign(Product_Name, Mobile_No, Name, Brand, Discription, Price);
+            
+             for(row = 0; row <= i; row++ )
+             {
+                Product_Array[row][0] = Object[row].Name;
+                Product_Array[row][1] = Object[row].Mobile_No;
+                Product_Array[row][2] = Object[row].Product_Name;
+                Product_Array[row][3] = Object[row].Brand;
+                Product_Array[row][4] = Object[row].Price;
+                Product_Array[row][5] = Object[row].Discription;
+             }
+          }
+          else
+             break;   
+       } 
+     }
+     catch(Exception e)
+     {
+       System.out.println(e.getMessage());
+     }
+    }
+  //Buyer Function 
+    static void Buyer(Assign Object[])
+    {
+        String Name;
+        String Mobile_No;
+        String Address;
+        int Choice;
+
+        Scanner input = new Scanner(System.in);
+       
+        System.out.println("*************** You Have choosen Buyer Section ***************\n");
+       
+        System.out.print("Enter your Name  : ");
+        Name = input.next().toUpperCase();
+      
+        System.out.print("Enter your Mobile_No  : ");
+        Mobile_No = input.next().toUpperCase();
+       
+        System.out.print("Enter your Address : ");
+        Address = input.next();
+        Address += input.nextLine();
+          
+        int Product_No;
+        int Temp_Choice;
+       
+        do {
+            Total_Array(Object);
+            System.out.println("Enter\n\t1) Select Item\n\t2) Search\n\t3) Exit\n");
+            Choice = input.nextInt();
+           
+            switch (Choice)
+            {
+                case 1:
+                    System.out.println("Enter the Product Number");
+                    Product_No = input.nextInt();
+       
+                    Bill(Product_No, Product_Array, Name);
+                    break;
+    
+                case 2:
+                    System.out.print("Enter Product Name or Brand to Search :");
+                    String Search_Type = input.next().toUpperCase();
+                    Search_Array(Object, Search_Type);
+                   
+                    System.out.print("Enter the Product Number : ");
+                    Product_No = input.nextInt();
+        
+                    System.out.println("\nEnter\n\t1) Add To Cart\n\t2) Cancel\n");
+                    System.out.print("Enter your Choice : ");
+                    Temp_Choice = input.nextInt();
+                   
+                    if(Temp_Choice == 1)
+                    {   
+                       Bill(Product_No, Search_Array, Name);
+                    }
+                    break;                   
+                case 3:
+                    break;
+                   
+                default:
+                    System.out.println("Invalid Choice");
+                    break;
+            }
+        } while (Choice != 3);
+    }
+   
+    //adding of Search Elements in Search Array
+    static void Search_Array(Assign Object[], String Search_Type)
+    {
+       int k = -1;
+       for(int x = 0; x <= i; x++ )
+       {
+          if(Object[x].Product_Name.equals(Search_Type) | Object[x].Brand.equals(Search_Type))
+          { 
+             k+=1;
+            
+             Search_Array[k][0] = Object[x].Name;
+             Search_Array[k][1] = Object[x].Mobile_No;
+             Search_Array[k][2] = Object[x].Product_Name;
+             Search_Array[k][3] = Object[x].Brand;
+             Search_Array[k][4] = Object[x].Price;
+             Search_Array[k][5] = Object[x].Discription; 
+          }
+       }
+       try
+       {
+          for(int x = 0; x <= k; x++)
+          {
+             System.out.println("\n********************"+" "+(x+1)+" "+"****************************\n");
+             System.out.println("SELLER NAME :"+Search_Array[x][0]);
+             System.out.println("SELLER Mobile_No :"+Search_Array[x][1]);
+             System.out.println("SELLER Product_Name :"+Search_Array[x][2]);
+             System.out.println("SELLER Brand :"+Search_Array[x][3]);
+             System.out.println("SELLER Price :"+Search_Array[x][4]);
+             System.out.println("SELLER Discription :"+Search_Array[x][5]);
+             System.out.println("\n****************************************************\n"); 
+          }
+       }
+       catch(Exception e)
+       {
+          System.out.println("ERROR");
+       }
+    }
+    //Adding of All Elements in product Array
+    static void Total_Array(Assign Object[])
+    {
+       for(int j = 0; j <= i; j++)
+       {
+           //Displaying All Elements in product Array
+           System.out.println("\n***********************"+" "+(j+1)+" "+"*************************\n");
+           System.out.println("\n\n");
+           System.out.println(Object[j].Name);
+           System.out.println(Object[j].Mobile_No);
+           System.out.println(Object[j].Product_Name);
+           System.out.println(Object[j].Brand);
+           System.out.println(Object[j].Price);
+           System.out.println(Object[j].Discription);
+           System.out.println("\n***************************************************\n");
+       }
+    }
+    //Billing Function
+    static void Bill(int Product_No, String Cart_Array[][], String Name)
+    {
+        cart++;
+        if(cart < 5)
+        {
+           int a;
+           Bill_Array[cart][0] = Cart_Array[Product_No-1][0];
+           Bill_Array[cart][1] = Cart_Array[Product_No-1][1];
+           Bill_Array[cart][2] = Cart_Array[Product_No-1][2];
+           Bill_Array[cart][3] = Cart_Array[Product_No-1][3];
+           Bill_Array[cart][4] = Cart_Array[Product_No-1][4];
+           Bill_Array[cart][5] = Cart_Array[Product_No-1][5];
+          
+           System.out.println("Item Sucessfully Added to cart.");         
+        }
+        int ch;
+        do
+        {
+           System.out.println("Enter\n\t1) Display Cart Item\n\t2) Remove Item From Cart\n\t3) Pay\n\t4) Exit\n");
+
+           Scanner input = new Scanner(System.in);
+           System.out.print("Enter your Choice : ");
+           ch = input.nextInt();
+          
+           switch (ch)
+           {
+               case 1:                  
+                   for(int k = 0; k <= cart; k++)
+                   {
+                       System.out.println("\n<*********************"+(k+1)+"*********************>\n");
+                       System.out.println("Product Name    :"+Cart_Array[k][2]);
+                       System.out.println("Brand           :"+Cart_Array[k][3]);
+                       System.out.println("Price           :"+Cart_Array[k][4]);
+                       System.out.println("Discription     :"+Cart_Array[k][5]);
+                       System.out.println("\n*********************************************\n");                     
+                   }
+  
+               case 2:
+                   if(cart != -1)
+                    {
+                       for(int k = 0; k <= cart; k++)
+                       {
+                          System.out.println("\n<*********************"+(k+1)+"*********************>\n");
+                          System.out.println("Product Name    :"+Cart_Array[k][2]);
+                          System.out.println("Brand           :"+Cart_Array[k][3]);
+                          System.out.println("Price           :"+Cart_Array[k][4]);
+                          System.out.println("Discription     :"+Cart_Array[k][5]);
+                          System.out.println("\n*********************************************\n");                     
+                       }
+                       System.out.print("Enter Product Number to Remove : ");
+                       int Number;
+                       while(true)
+                       {
+                          Number= input.nextInt();
+                          if(Number >= 0 && Number <= cart)
+                          {
+                              break;
+                          }
+                          else
+                              System.out.println("Enter Between 0 to" + cart);
+                       }
+                       for(int k = Number -1; k <= cart; k++)
+                       {
+                          Cart_Array[k][0] =  Cart_Array[k+1][0];
+                          Cart_Array[k][1] =  Cart_Array[k+1][1];
+                          Cart_Array[k][2] =  Cart_Array[k+1][2];
+                          Cart_Array[k][3] =  Cart_Array[k+1][3];
+                          Cart_Array[k][4] =  Cart_Array[k+1][4];
+                          Cart_Array[k][5] =  Cart_Array[k+1][5];
+                       }
+                       System.out.println("Item Removed From Cart");
+                    }
+                    else
+                        System.out.println("No Item is Added to Cart");                 
+                   break;
+                  
+               case 3:
+                    System.out.println("\n" + Name + " Your Bill is Ready......\n");
+                    int Amount = 0;
+                    for(int k = 0; k <= cart; k++)
+                    {
+                       System.out.println("\n<*********************"+(k+1)+"*********************>\n");
+                       System.out.println("Product Name    :"+Cart_Array[k][2]);
+                       System.out.println("Brand           :"+Cart_Array[k][3]);
+                       System.out.println("Price           :"+Cart_Array[k][4]);
+                       System.out.println("Discription     :"+Cart_Array[k][5]);
+                       System.out.println("\n*********************************************\n");
+                       Amount = (int) (Amount + Double.parseDouble(Cart_Array[k][4])); 
+                    }
+                    System.out.println("\n Total Amount to be Payed = " + Amount);
+                    System.out.println("\nProceed to pay or continue Shopping (Y/N)");
+                    String c = input.next().toUpperCase();
+                    if("Y".equals(c))
+                    {
+                        System.out.println("\nYour Order is Sucessfull...");
+                        System.out.println("\nDo you want to continue Shopping ? (Y/N)\n");
+                       
+                        c = input.next().toUpperCase();
+                        if("Y".equals(c))
+                        {
+                           return;
+                        }
+                        else
+                            System.exit(0);
+                    }
+                    else
+                        return;
+                    break;
+                   
+               case 4:
+                    System.out.println("\nDo you want to continue Shopping ?\n(Y/N)");
+                    String Desicion = input.next().toUpperCase();
+                    if("Y".equals(Desicion))
+                       break;
+                    else
+                       System.exit(0);
+                default:
+                    System.out.println(" !!Invalid Choice!! ");
+                    break;
+        }
+        }
+        while(ch != 4);
+    }  
+}
